@@ -1,17 +1,10 @@
-#[macro_use]
-extern crate rocket;
+//! main.rs
 
-#[get("/hello/<name>/<age>")]
-fn hello(name: &str, age: u8) -> String {
-    format!("Hello, {} year old named {}!", age, name)
-}
+use hatchet::run;
+use std::net::TcpListener;
 
-#[get("/")]
-fn index() -> String {
-    "Hello!".to_string()
-}
-
-#[launch]
-fn rocket() -> _ {
-    rocket::build().mount("/", routes![index, hello])
+#[tokio::main]
+async fn main() -> std::io::Result<()> {
+    let listener = TcpListener::bind("127.0.0.1:8000").expect("Failed to bind port 8000.");
+    return run(listener)?.await;
 }
