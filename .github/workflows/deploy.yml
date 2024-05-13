@@ -61,6 +61,6 @@ jobs:
           script: |
             cd ~
             export POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
-            docker compose down --file api-docker-compose.yml
-            docker compose pull --file api-docker-compose.yml
-            docker compose up -d --file api-docker-compose.yml
+            docker compose -f api-docker-compose.yml down
+            docker compose -f api-docker-compose.yml pull
+            docker compose -f api-docker-compose.yml up -d
