@@ -10,6 +10,7 @@ env:
 
 jobs:
   build-docker-image:
+    needs: [test, fmt, clippy, coverage]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -36,9 +37,8 @@ jobs:
             *.cache-to=type=gha,mode=max
 
   deploy:
-    needs: build
+    needs: build-docker-image
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
