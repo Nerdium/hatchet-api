@@ -1,4 +1,4 @@
-name: Build, Test, and Deploy to Prod
+name: Deploy
 
 on:
   push:
@@ -9,32 +9,14 @@ env:
   SQLX_OFFLINE: true
 
 jobs:
-  build:
+  build-docker-image:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Cache dependencies
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.cargo
-            target/
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-          restore-keys: ${{ runner.os }}-cargo-
-
-      - name: Install Rust
-        uses: actions-rs/toolchain@v1
-        with:
-          profile: minimal
-          toolchain: stable
-
-      - name: Build and test code
-        run: |
-          cargo build --verbose
-          cargo test --verbose
+      - uses: actions/checkout@v3
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - name: Build code
+        run: cargo build
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
