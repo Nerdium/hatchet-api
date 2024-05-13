@@ -8,10 +8,18 @@ async fn health_check() -> impl Responder {
     HttpResponse::Ok().finish()
 }
 
+async fn default_page() -> impl Responder {
+    "Hello!".to_string()
+}
+
 pub fn run(listener: TcpListener) -> Result<Server, std::io::Error> {
-    let server = HttpServer::new(|| App::new().route("/health_check", web::get().to(health_check)))
-        .listen(listener)?
-        .run();
+    let server = HttpServer::new(|| {
+        App::new()
+            .route("/health_check", web::get().to(health_check))
+            .route("/", web::get().to(default_page))
+    })
+    .listen(listener)?
+    .run();
 
     Ok(server)
 }
