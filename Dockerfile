@@ -1,4 +1,4 @@
-FROM messense/rust-musl-cross:x86_64-musl as chef
+FROM messense/rust-musl-cross:x86_64-musl AS chef
 ENV SQLX_OFFLINE=true
 RUN cargo install cargo-chef
 WORKDIR /hatchet
@@ -21,6 +21,5 @@ RUN cargo build --release --target x86_64-unknown-linux-musl
 # Create a new stage with a minimal image
 FROM scratch
 COPY --from=builder /hatchet/target/x86_64-unknown-linux-musl/release/hatchet /hatchet
-ENV ROCKET_ADDRESS=0.0.0.0
 EXPOSE 8000
 ENTRYPOINT ["/hatchet"]
