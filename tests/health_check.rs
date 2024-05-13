@@ -27,5 +27,5 @@ fn spawn_app() -> String {
     let server = hatchet::run(listener).expect("Failed to bind listener.");
     let _ = tokio::spawn(server);
 
-    return format!("http://127.0.0.1:{}", port);
+    format!("http://127.0.0.1:{}", port)
 }
