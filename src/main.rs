@@ -13,5 +13,8 @@ fn index() -> String {
 
 #[launch]
 fn rocket() -> _ {
+
     rocket::build().mount("/", routes![index, hello])
+
+    
 }
